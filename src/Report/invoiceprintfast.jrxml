@@ -10,7 +10,7 @@
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="ID" class="java.lang.Integer"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["D:\\invoice\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\\Users\\HP\\Documents\\NetBeansProjects\\Inofinity-POS-master\\src\\Report\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT

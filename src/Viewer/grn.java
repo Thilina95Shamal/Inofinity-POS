@@ -1544,14 +1544,15 @@ public class grn extends javax.swing.JDialog {
                 this.txtmour.setText(rs.getString("madatiya_our"));
                 this.txtpwhole.setText(rs.getString("palan_wholesale"));
                 this.txtpret.setText(rs.getString("palan_retail"));
-                this.txtpour.setText(rs.getString("palan_our"));               
+                this.txtpour.setText(rs.getString("palan_our")); 
+                this.lowstocktxt.setText(this.dtm1.getValueAt(row, 9) + "");
             }else{
                 this.cpidtxt.setText(this.dtm1.getValueAt(row, 1) + "");
                 this.cpnametxt.setText(this.dtm1.getValueAt(row, 2) + "");
                 this.cbuytxt.setText(this.dtm1.getValueAt(row, 3) + "");
                 this.minpricetxt.setText(this.dtm1.getValueAt(row, 4) + "");
                 this.maxpricetxt.setText(this.dtm1.getValueAt(row, 5) + "");
-                this.lowstocktxt.setText(this.dtm1.getValueAt(row, 8) + "");
+                this.lowstocktxt.setText(this.dtm1.getValueAt(row, 9) + "");
                 this.cqtytxt.requestFocus();
             }
       
@@ -1676,6 +1677,18 @@ public class grn extends javax.swing.JDialog {
       this.minpricetxt.setText("");
       this.subtotaltxt.setText("");
       this.defpricetxt.setText("");
+      this.txtgwhole.setText("");
+      this.txtgret.setText("");
+      this.txtgour.setText("");
+      this.txtkwhole.setText("");
+      this.txtkret.setText("");
+      this.txtkour.setText("");
+      this.txtmwhole.setText("");
+      this.txtmret.setText("");
+      this.txtmour.setText("");
+      this.txtpwhole.setText("");
+      this.txtpret.setText("");
+      this.txtpour.setText("");
       this.jCheckBox1.setSelected(false);
       setexpirecombo();
     }
@@ -1690,6 +1703,9 @@ public class grn extends javax.swing.JDialog {
       this.maxpricetxt.setText("");
       this.defpricetxt.setText("");
       this.subtotaltxt.setText("");
+      this.txtgwhole.setText("");
+      this.txtgret.setText("");
+      this.txtgour.setText("");
       this.txtkwhole.setText("");
       this.txtkret.setText("");
       this.txtkour.setText("");
@@ -2746,16 +2762,22 @@ public class grn extends javax.swing.JDialog {
 
                     double avqty = qty.doubleValue() + q;
 
-                    int stockid = this.d.nextnum("select max(id) from stock", "max(id)");
+                    int stockid = this.d.nextnum("select max(id) from istock", "max(id)");
+                    int stock_unitsid = this.d.nextnum("select max(id) from stock", "max(id)");
                     int i2 = this.d.aud("update stock set avqty = 0 where product_id = '" + this.cpidtxt.getText() + "' ");
 
                     int i = 0;
-
+                    //int j = 0;
+                    //int k = 0; 
 
                     //Expiery
                     if (this.jCheckBox1.isSelected()) {
                       i = this.d.aud("Insert into stock(id, product_id, supplier_id, buyprice, buyqty, buycost, minprice, maxprice, defprice, avqty, rqty, lowstock, user_usename, date , active , exdate ) Values( '" + stockid + "' ,'" + this.cpidtxt
                           .getText() + "' ,'" + this.supplbl.getText() + "' ,'" + buy + "' ,'" + qty + "' , buyprice*buyqty  ,'" + min + "' ,'" + max + "' ,'" + def + "'  , '" + avqty + "', '0' , '" + low + "'  , '" + this.user + "'  , NOW()  ,'1' , '" + this.datecombo.getText() + "' ) ");
+                     // j = this.d.aud("Insert into istock(id, product_id, supplier_id, buyprice, buyqty, buycost avqty, rqty, lowstock, user_usename, date , active , exdate ) Values( '" + stockid + "' ,'" + this.cpidtxt
+                     //     .getText() + "' ,'" + this.supplbl.getText() + "' ,'" + buy + "' ,'" + qty + "' , buyprice*buyqty  , '" + avqty + "', '0' , '" + low + "'  , '" + this.user + "'  , NOW()  ,'1' , '" + this.datecombo.getText() + "' ) ");
+                     // k = this.d.aud("Insert into istock_units(id, minprice, maxprice, defprice, stock_id ) Values( '" + min + "' ,'" + max + "' ,'" + def + "' , '" + stockid + "' ) ");
+                       
                     //If Expieru not selected <Null>
                     } else {
                       i = this.d.aud("Insert into stock(id, product_id, supplier_id, buyprice, buyqty, buycost, minprice, maxprice, defprice, avqty, rqty, lowstock, user_usename, date , active) Values( '" + stockid + "' ,'" + this.cpidtxt
@@ -2787,10 +2809,23 @@ public class grn extends javax.swing.JDialog {
                 } else {
 
                   int stockid = this.d.nextnum("select max(id) from stock", "max(id)");
+                  int stock_unitsid = this.d.nextnum("select max(id) from stock", "max(id)");
                   int i = 0;
+                  /*
+                  int j = 0;
+                  int k = 0;
+                  int stockid = this.d.nextnum("select max(id) from istock", "max(id)");
+                  int stock_unitsid = this.d.nextnum("select max(id) from istock_units", "max(id)");
+*/
                   if (this.jCheckBox1.isSelected()) {
                     i = this.d.aud("Insert into stock(id, product_id, supplier_id, buyprice, buyqty, buycost, minprice, maxprice, defprice, avqty, rqty, lowstock, user_usename, date , active , exdate ) Values( '" + stockid + "' ,'" + this.cpidtxt
-                        .getText() + "' ,'" + this.supplbl.getText() + "' ,'" + buy + "' ,'" + qty + "' , buyprice*buyqty  ,'" + min + "' ,'" + max + "' ,'" + def + "'  , buyqty , '0' , '" + low + "'  , '" + this.user + "'  , NOW()  ,'1' , '" + this.datecombo.getText() + "' ) ");
+                       .getText() + "' ,'" + this.supplbl.getText() + "' ,'" + buy + "' ,'" + qty + "' , buyprice*buyqty  ,'" + min + "' ,'" + max + "' ,'" + def + "'  , buyqty , '0' , '" + low + "'  , '" + this.user + "'  , NOW()  ,'1' , '" + this.datecombo.getText() + "' ) ");
+                      
+                     /*j = this.d.aud("Insert into istock(id, product_id, supplier_id, buyprice, buyqty, buycost, avqty, rqty, lowstock, user_usename, date , active , exdate ) Values( '" + stockid + "' ,'" + this.cpidtxt
+                          .getText() + "' ,'" + this.supplbl.getText() + "' ,'" + buy + "' ,'" + qty + "' , buyprice*buyqty  , buyqty , '0' , '" + low + "'  , '" + this.user + "'  , NOW()  ,'1' , '" + this.datecombo.getText() + "' ) ");
+                      
+                      k = this.d.aud("Insert into istock_units(id, minprice, maxprice, defprice, stock_id ) Values( '" + stock_unitsid + "' ,'" + min + "' ,'" + max + "' ,'" + def + "' , '" + stockid + "' ) ");
+                      */ 
                   } else {
                     i = this.d.aud("Insert into stock(id, product_id, supplier_id, buyprice, buyqty, buycost, minprice, maxprice, defprice, avqty, rqty, lowstock, user_usename, date , active) Values( '" + stockid + "' ,'" + this.cpidtxt
                         .getText() + "' ,'" + this.supplbl.getText() + "' ,'" + buy + "' ,'" + qty + "' , buyprice*buyqty  ,'" + min + "' ,'" + max + "' ,'" + def + "'  , buyqty , '0' , '" + low + "'  , '" + this.user + "'  , NOW()  ,'1' ) ");

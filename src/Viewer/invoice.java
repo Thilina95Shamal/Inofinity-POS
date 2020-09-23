@@ -845,14 +845,14 @@ public class invoice extends javax.swing.JDialog {
                     .addComponent(totaltxt)
                     .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cashpayment, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cashdue)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 16, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cashpayment, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cashdue))
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cashdue, cashpayment, totaltxt});
@@ -1662,6 +1662,21 @@ public class invoice extends javax.swing.JDialog {
     }//GEN-LAST:event_numberlist1KeyReleased
 
     private void numberlist1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_numberlist1MouseClicked
+        try {
+            //Thilina_Edited
+          Connection conn = d.getConnection();
+          PreparedStatement ps = conn.prepareStatement("SELECT unit_type FROM product WHERE unit_type = 'Weights' and id LIKE '%" + this.pidtxt.getText() + "%'"); 
+          ResultSet rs1=ps.executeQuery();
+          if(rs1.next()){
+                   jComboBox1.setVisible(true);
+                   jComboBox1.setSelectedIndex(0);
+          }
+          //
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+            
         String cnum = numberlist1.getSelectedValue().toString();
         String arr[] = cnum.split(" - ", 2);
         pidtxt.setText(arr[0]);
@@ -2233,15 +2248,7 @@ public class invoice extends javax.swing.JDialog {
         for (int i = 0; rs.next(); i++) {
           this.jlm1.add(i, rs.getString("id") + " - " + rs.getString("name"));
           
-          //Thilina_Edited
-          Connection conn = d.getConnection();
-          PreparedStatement ps = conn.prepareStatement("SELECT unit_type FROM product WHERE unit_type = 'Weights' and id = '"+pidtxt.getText()+"'"); 
-          ResultSet rs1=ps.executeQuery();
-          if(rs.next()){
-                   jComboBox1.setVisible(true);
-                   jComboBox1.setSelectedIndex(0);
-          }
-          //
+          
           
         }
         this.numberlist1.setModel(this.jlm1);
